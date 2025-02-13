@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Kiss Day</title>
+    <style>
+        /* Body and general settings */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f9f344;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-size: clamp(2rem, 5vw, 3em);
+            color: #ff3366;
+            position: relative;
+            z-index: 2;
+            margin-top: 20px;
+        }
+
+        /* White text box */
+        .text-box {
+            background-color: white;
+            padding: 30px;
+            margin-top: 20px;
+            width: 80%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            z-index: 3;
+            color: #333;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            text-align: left;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Falling kisses */
+        .kisses-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .kiss {
+            position: absolute;
+            font-size: 2rem;
+            animation: fall linear infinite;
+            opacity: 0.9;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10%) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Music button */
+        .music-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ff3366;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: all 0.3s ease-in-out;
+            z-index: 9999;
+        }
+
+        .music-button:hover {
+            background-color: #ff1a53;
+            box-shadow: 0 0 15px rgba(255, 51, 102, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Happy Kiss Day Khushiii... 💋</h1>
+    </div>
+
+    <!-- White Text Box -->
+    <div class="text-box">
+        <p>Dear Khushi,</p>
+        <p>Happy Kiss Day.... On 31st October, it was the first time... and after that, I don’t know how many times we’ve kissed, I still feel it's like a dream. Every time we kiss, I feel your lips touching my soul, digging it deeper. Oh, I wish we could kiss today.</p>
+        <p>Here's to many more kisses, laughter, and memories together. I love you more than words can express.</p>
+        <p>But let me ask you something... would you kiss me if you could meet me?</p>
+        <p>Yours forever,<br>Harish</p>
+    </div>
+
+    <!-- Falling Kisses -->
+    <div class="kisses-container"></div>
+
+    <!-- Music Button -->
+    <button class="music-button" onclick="toggleMusic()">Play Music</button>
+
+    <!-- Audio Player -->
+    <audio id="background-music" src="ur lips my lips, apocalypes.mp3"></audio>
+
+    <script>
+        let musicPlaying = false;
+        const audio = document.getElementById("background-music");
+
+        // Function to fade in music
+        function fadeInMusic() {
+            let volume = 0;
+            audio.volume = volume;
+            audio.play().catch(() => {
+                console.log("Autoplay blocked, waiting for user interaction.");
+            });
+
+            let fadeInterval = setInterval(() => {
+                if (volume < 0.7) {
+                    volume += 0.05;
+                    audio.volume = volume;
+                } else {
+                    clearInterval(fadeInterval);
+                }
+            }, 300);
+        }
+
+        function toggleMusic() {
+            if (musicPlaying) {
+                audio.pause();
+                document.querySelector('.music-button').innerText = "Play Music";
+            } else {
+                fadeInMusic();
+                document.querySelector('.music-button').innerText = "Pause Music";
+            }
+            musicPlaying = !musicPlaying;
+        }
+
+        // Try autoplaying the music on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => {
+                audio.play().then(() => {
+                    fadeInMusic();
+                    document.querySelector('.music-button').innerText = "Pause Music";
+                    musicPlaying = true;
+                }).catch(() => {
+                    console.log("Autoplay blocked, user interaction needed.");
+                });
+            }, 1000);
+        });
+
+        // Falling kisses animation
+        const kissesContainer = document.querySelector('.kisses-container');
+
+        function createKiss() {
+            const kiss = document.createElement('div');
+            kiss.className = 'kiss';
+            kiss.innerHTML = '💋';
+            kiss.style.left = Math.random() * window.innerWidth + 'px';
+            kiss.style.animationDuration = Math.random() * 5 + 5 + 's';
+            kissesContainer.appendChild(kiss);
+
+            setTimeout(() => kiss.remove(), 10000);
+        }
+
+        setInterval(createKiss, 800);
+    </script>
+</body>
+</html>
